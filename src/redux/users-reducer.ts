@@ -7,10 +7,10 @@ const SET_USERS = "SET_USERS"
 export type UserType = {
     id: number,
     followed: boolean,
-    fullName: string,
-    status: string,
+    name: string,
     location: {city:string, country:string}
-    photoUrl:string,
+    photos: {small: string | null, large: string | null }
+    status: string
 }
 export type UsersType = {
     users: Array<UserType>

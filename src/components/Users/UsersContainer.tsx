@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {followAC, setUsersAC, unfollowAC, UsersType, UserType} from "../../redux/users-reducer";
 import {AppStateType} from "../../redux/redux-store";
 import {Dispatch} from "redux";
+import UsersC from "./UsersС";
 
 type MapStatePropsType = {
     usersPage:UsersType
@@ -39,4 +40,5 @@ export type UsersPropsType = MapStatePropsType & mapDispatchToPropsType
 }
 //колбеки
 
-export default connect(mapStateToProps, mapDispatchToProps)(Users)
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersC)
