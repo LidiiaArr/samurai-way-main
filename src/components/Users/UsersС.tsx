@@ -10,24 +10,42 @@ import {AppStateType} from "../../redux/redux-store";
 
 class UsersC extends React.Component<UsersPropsType>{
 
-    constructor(props) {
-        super(props);
-
-            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-                this.props.setUsers(response.data.items)
-            })
-    }
-
-    //  getUsers = () => {
-    //     if (this.props.usersPage.users.length === 0) {
+    // constructor(props) {
+    //     super(props);
+    //
     //         axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
     //             this.props.setUsers(response.data.items)
     //         })
-    //     }
     // }
+    componentDidMount() {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
+            .then(response => {
+                this.props.setUsers(response.data.items);
+                this.props.setTotalUsersCount(response.data.totalCount)
+            })
+    }
 
+    onPageChanged =(pageNumber) => {
+        this.props.setCurrentPage(pageNumber);
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
+            .then(response => {
+                this.props.setUsers(response.data.items)
+            })
+    }
     render(){
+
+        let pagesCount =Math.ceil(this.props.totalUserCount / this.props.pageSize);
+        let pages:Array<number> = [];
+        for(let i=1; i <= pagesCount; i++){
+            pages.push(i)
+        }
+
        return <div>
+           <div>
+               {/*{pages.map(p=> {return <span className={this.props.currentPage === p && styles.selectedPage}>{p}</span>})}*/}
+               {pages.map(p=> {return <span className={this.props.currentPage === p?styles.selectedPage:styles.Page}
+                                            onClick={ (e)=>{this.onPageChanged(p)}} >{p}</span>})}
+           </div>
             {/*<button onClick={this.getUsers}>Get Users</button>*/}
             {
                 this.props.usersPage.users.map(u => <div key={u.id}>
