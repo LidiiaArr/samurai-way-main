@@ -61,13 +61,13 @@ type setCurrentPageACType = {
 }
 type setUsersTotalCountACType ={
     type: "SET_TOTAL_USERS_COUNT"
-    count: number
+    totalUsersCount: number
 }
 export const followAC = (userId:number): followACType=> ({type: FOLLOW, userId})
 export const unfollowAC = (userId:number) : unfollowACType=> ({type: UNFOLLOW, userId})
 export const setUsersAC = (users:Array<UserType>):setUsersACType=> ({type: SET_USERS, users})
 export const setCurrentPageAC = (currentPage: number): setCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage:currentPage})
-export const setUsersTotalCountAC = (totalUsersCount: number):setUsersTotalCountACType  => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount})
+export const setUsersTotalCountAC = (totalUsersCount: number):setUsersTotalCountACType  => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount: totalUsersCount})
 
 export const usersReducer = (state:UsersType=initialState, action:followACType|unfollowACType|setUsersACType|setCurrentPageACType|setUsersTotalCountACType):UsersType=> {
     switch (action.type) {
@@ -86,11 +86,10 @@ export const usersReducer = (state:UsersType=initialState, action:followACType|u
         case SET_CURRENT_PAGE:
             return {...state, currentPage: action.currentPage }
         case SET_TOTAL_USERS_COUNT:
-            return {...state,  totalUserCount: action.count}
+            return {...state,  totalUserCount: action.totalUsersCount}
         default:
             return state;
 
     }
-
     return state;
 }

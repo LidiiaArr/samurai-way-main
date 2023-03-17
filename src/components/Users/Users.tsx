@@ -1,26 +1,35 @@
 import React from "react";
-//import styles from './users.module.css'
-import {UsersType, UserType} from "../../redux/users-reducer";
-import {UsersPropsType} from "./UsersContainer";
-import {inspect} from "util";
-import styles from './user.module.css'
-import axios from "axios";
-import userPhoto from '../../assets/images/single-user-icon-png-free--rLHSHx.png'
+import styles from "./user.module.css";
+import userPhoto from "../../assets/images/single-user-icon-png-free--rLHSHx.png";
+import {UserType} from "../../redux/users-reducer";
 
+type UsersPropsTypePresentComp = {
+    totalUsersCount : number
+    currentPage: number
+    pageSize: number
+    users: Array<UserType>
+    follow: (userId:number)=> void
+    unfollow:(userId:number)=> void
+    onPageChanged: (pageNumber: number)=> void
+}
+const Users = (props: UsersPropsTypePresentComp) => {
 
-let Users = (props: UsersPropsType) => {
+    let pagesCount = Math.ceil(props.totalUsersCount/props.pageSize);
+console.log(props.totalUsersCount)
 
-    let getUsers = () => {
-        if (props.usersPage.users.length === 0) {
-            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-                props.setUsers(response.data.items)
-            })
-        }
+    let pages:Array<number> = [ ];
+    for(let i=1; i <= pagesCount; i++){
+        pages.push(i)
     }
+
     return <div>
-        <button onClick={getUsers}>Get Users</button>
-        {
-            props.usersPage.users.map(u => <div key={u.id}>
+        <div>
+            {/*{pages.map(p=> {return <span className={this.props.currentPage === p && styles.selectedPage}>{p}</span>})}*/}
+            {pages.map(p=> {return <span className={ props.currentPage === p ? styles.selectedPage : styles.Page }
+                                         onClick={ (e)=>{props.onPageChanged(p)}} >{p}</span>})}
+        </div>
+        {/*{props.usersPage.users.map(u => <div key={u.id}>*/}
+        {props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
                         <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto}/>
@@ -38,7 +47,8 @@ let Users = (props: UsersPropsType) => {
                 </span>
                 <span>
                     <span>
-                        <div>{u.name}</div><div>{u.status}</div>
+                        <div>{u.name}</div>
+                        <div>{u.status}</div>
                     </span>
                     <span>
 
@@ -49,7 +59,8 @@ let Users = (props: UsersPropsType) => {
             </div>)
         }
     </div>
-}
+};
 //span строчный занимает места по содержимому
 //div чтобы один под другим выстроился
+
 export default Users;
