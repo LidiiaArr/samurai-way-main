@@ -1,0 +1,12 @@
+.content {
+    grid-area: c;
+    background-color: cornflowerblue;
+}
+
+.item {
+    color: #b100cd;
+}
+
+.descriptionBlock {
+padding: 10px;
+}
