@@ -8,7 +8,7 @@ type ProfilePropsType = {
 
 }
 
-export function Profile(props:ProfilePropsType) {
+export function Profile(props: ProfilePropsType) {
     return (
         <div>
             <ProfileInfo profile={props.profile}/>

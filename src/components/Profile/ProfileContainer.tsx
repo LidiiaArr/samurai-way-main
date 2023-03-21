@@ -10,15 +10,27 @@ import {Profile} from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
 import {ProfileUserType, setUserProfile} from "../../redux/profile-reducer";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 
 type ProfilePropsType = {
-    setUserProfile:(profile:ProfileUserType)=> void
+    setUserProfile: (profile: ProfileUserType) => void
     profile: ProfileUserType
 }
 
-class ProfileContainer extends React.Component<ProfilePropsType> {
+type PathParamsType = {
+    userId: string
+}
+type AllProfilePropsType = ProfilePropsType & RouteComponentProps<PathParamsType>
+
+class ProfileContainer extends React.Component<AllProfilePropsType> {
+
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/2`)
+        let userId = this.props.match.params.userId;
+        if (!userId) {
+            userId = "2";
+        }
+        //axios.get(`https://social-network.samuraijs.com/api/1.0/profile/`+ userId)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
             .then(response => {
                 this.props.setUserProfile(response.data);
             })
@@ -27,6 +39,7 @@ class ProfileContainer extends React.Component<ProfilePropsType> {
     //метод жизненного цикла которые есть у объекта созданного с помощью этого класса
     // вызывается после рендеринга компонента
     //забирание данных долгий асинхронный процесс
+
     render() {
         return (
             <Profile {...this.props} profile={this.props.profile}/>
@@ -48,4 +61,7 @@ class ProfileContainer extends React.Component<ProfilePropsType> {
 let mapStateToProps = (state) => ({
     profile: state.profilePage.profile
 })
-export default connect(mapStateToProps, {setUserProfile})(ProfileContainer)
+
+let withUrlDataComponent = withRouter(ProfileContainer)
+//Закидываем данные из url
+export default connect(mapStateToProps, {setUserProfile})(withUrlDataComponent)

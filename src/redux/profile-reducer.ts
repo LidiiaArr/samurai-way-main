@@ -1,15 +1,14 @@
-
 const ADD_Post = "ADD-Post"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 const SET_USER_PROFILE = "SET_USER_PROFILE"
 
 export type AddPostActionType = {
-    type:"ADD-Post" //тип конкретная строка
+    type: "ADD-Post" //тип конкретная строка
     postMessage: string
 }
 
 export type ChangeNewTextActionType = {
-    type:"UPDATE-NEW-POST-TEXT" //тип конкретная строка
+    type: "UPDATE-NEW-POST-TEXT" //тип конкретная строка
     newText: string
 }
 export type PostType = {
@@ -48,7 +47,7 @@ export type ProfilePageType = {
     profile: ProfileUserType | null
 }
 
-let initialState:ProfilePageType = {
+let initialState: ProfilePageType = {
     posts: [
         {id: 1, message: "Hi, how are you", likesCount: 12},
         {id: 2, message: "It's my first post", likesCount: 11},
@@ -59,17 +58,17 @@ let initialState:ProfilePageType = {
     profile: null
 }
 
-export const addPostActionCreator = (postMessage:string):AddPostActionType=> {
+export const addPostActionCreator = (postMessage: string): AddPostActionType => {
     return {
-        type:ADD_Post,
+        type: ADD_Post,
         postMessage: postMessage
         //store.state.profilePage.newPostText
     }
 }
 
-export const updateNewPostTextActionCreator = (newText1:string): ChangeNewTextActionType=> {
+export const updateNewPostTextActionCreator = (newText1: string): ChangeNewTextActionType => {
     return {
-        type:UPDATE_NEW_POST_TEXT,
+        type: UPDATE_NEW_POST_TEXT,
         newText: newText1
     }
 }
@@ -78,7 +77,7 @@ type setUserProfileACType = {
     type: "SET_USER_PROFILE"
     profile: ProfileUserType
 }
-export const setUserProfile = (profile: ProfileUserType):setUserProfileACType => {
+export const setUserProfile = (profile: ProfileUserType): setUserProfileACType => {
     return {
         type: SET_USER_PROFILE,
         profile: profile
@@ -86,8 +85,8 @@ export const setUserProfile = (profile: ProfileUserType):setUserProfileACType =>
 }
 
 
-export const profileReducer = (state:ProfilePageType = initialState, action:AddPostActionType | ChangeNewTextActionType | setUserProfileACType):ProfilePageType=>{
-    switch (action.type){
+export const profileReducer = (state: ProfilePageType = initialState, action: AddPostActionType | ChangeNewTextActionType | setUserProfileACType): ProfilePageType => {
+    switch (action.type) {
         case ADD_Post: {
             const newPost: PostType = {
                 id: new Date().getTime(),
@@ -101,7 +100,7 @@ export const profileReducer = (state:ProfilePageType = initialState, action:AddP
             }
         }
         case UPDATE_NEW_POST_TEXT: {
-            return{
+            return {
                 ...state,
                 newPostText: action.newText,
             }
