@@ -9,9 +9,12 @@ import {UsersPropsType} from "../Users/UsersContainer";
 import {Profile} from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfile} from "../../redux/profile-reducer";
+import {ProfileUserType, setUserProfile} from "../../redux/profile-reducer";
 
-type ProfilePropsType = any
+type ProfilePropsType = {
+    setUserProfile:(profile:ProfileUserType)=> void
+    profile: ProfileUserType
+}
 
 class ProfileContainer extends React.Component<ProfilePropsType> {
     componentDidMount() {

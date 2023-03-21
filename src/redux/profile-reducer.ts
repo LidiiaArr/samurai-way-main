@@ -1,4 +1,3 @@
-import {PostType, ProfilePageType} from "./store";
 
 const ADD_Post = "ADD-Post"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
@@ -12,6 +11,41 @@ export type AddPostActionType = {
 export type ChangeNewTextActionType = {
     type:"UPDATE-NEW-POST-TEXT" //тип конкретная строка
     newText: string
+}
+export type PostType = {
+    id: number,
+    message: string,
+    likesCount: number
+}
+export type ContactsProfileType = {
+    facebook: string | null
+    website: string | null
+
+    vk: string | null
+    twitter: string | null
+    instagram: string | null
+    youtube: string | null
+    github: string | null
+    mainLink: string | null
+}
+
+export type PhotosProfileType = {
+    small: string
+    large: string
+}
+export type ProfileUserType = {
+    aboutMe: string
+    contacts: ContactsProfileType
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    userId: number
+    photos: PhotosProfileType
+}
+export type ProfilePageType = {
+    posts: Array<PostType>
+    newPostText: string
+    profile: ProfileUserType | null
 }
 
 let initialState:ProfilePageType = {
@@ -40,8 +74,11 @@ export const updateNewPostTextActionCreator = (newText1:string): ChangeNewTextAc
     }
 }
 
-type setUserProfileACType = any
-export const setUserProfile = (profile) => {
+type setUserProfileACType = {
+    type: "SET_USER_PROFILE"
+    profile: ProfileUserType
+}
+export const setUserProfile = (profile: ProfileUserType):setUserProfileACType => {
     return {
         type: SET_USER_PROFILE,
         profile: profile
@@ -49,7 +86,7 @@ export const setUserProfile = (profile) => {
 }
 
 
-export const profileReducer = (state:ProfilePageType = initialState, action:AddPostActionType | ChangeNewTextActionType | setUserProfileACType):any=>{
+export const profileReducer = (state:ProfilePageType = initialState, action:AddPostActionType | ChangeNewTextActionType | setUserProfileACType):ProfilePageType=>{
     switch (action.type){
         case ADD_Post: {
             const newPost: PostType = {

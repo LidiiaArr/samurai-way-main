@@ -60,9 +60,9 @@ let store = {
 
     dispatch(action){
 //диспатчим экшены из UI и эти действия преобразуют стейт
-        this.state.profilePage = profileReducer(this.state.profilePage, action)
-        this.state.dialogsPage = dialogsReducer(this.state.dialogsPage, action)
-        this.state.sidebar = sidebarReducer(this.state.sidebar, action)
+//         this.state.profilePage = profileReducer(this.state.profilePage, action)
+//         this.state.dialogsPage = dialogsReducer(this.state.dialogsPage, action)
+//         this.state.sidebar = sidebarReducer(this.state.sidebar, action)
 //Редьюсеры - функции принимают часть стейта нужную редьюсеру и экшен
 //Преобразают часть стейта и выплевывают его
 //Переприсваиваем заново
