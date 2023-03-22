@@ -16,7 +16,6 @@ type UsersPropsTypePresentComp = {
 const Users = (props: UsersPropsTypePresentComp) => {
 
     let pagesCount = Math.ceil(props.totalUsersCount/props.pageSize);
-console.log(props.totalUsersCount)
 
     let pages:Array<number> = [ ];
     for(let i=1; i <= pagesCount; i++){
@@ -33,8 +32,8 @@ console.log(props.totalUsersCount)
         {props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
-                        <NavLink to={'/profile'}>
-                            <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto}/>
+                        <NavLink to={'/profile/' + u.id}>
+                            <img src={u?.photos?.small ? u.photos.small : userPhoto} className={styles.userPhoto}/>
                         </NavLink>
                     </div>
                     <div>
