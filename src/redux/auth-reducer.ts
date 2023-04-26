@@ -25,7 +25,7 @@ let initialState :AuthType = {
 
 //Экшонкриэйторы
 
-export const authReducer = (state:AuthType=initialState, action:any):AuthType=> {
+export const authReducer = (state:AuthType=initialState, action:setAuthUserDataACType):AuthType=> {
 
     switch (action.type) {
         case SET_USER_DATA:
@@ -39,10 +39,16 @@ export const authReducer = (state:AuthType=initialState, action:any):AuthType=> 
             }
         default:
             return state;
-
     }
     return state;
 }
-
-export const setAuthUserData = (userId, email, login) => ({type: SET_USER_DATA, data: {userId, email, login}})
+export type setAuthUserDataACType = {
+    type: "SET_USER_DATA",
+    data: {
+        userId: number
+        email: string
+        login: string
+    }
+}
+export const setAuthUserData = (userId: number, email: string, login: string):setAuthUserDataACType => ({type: SET_USER_DATA, data: {userId, email, login}})
 // export const setAuthUserData = (data) => ({type: SET_USER_DATA, data: data})
