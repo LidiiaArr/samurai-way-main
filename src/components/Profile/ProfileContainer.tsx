@@ -1,11 +1,4 @@
 import React from 'react';
-import s from './Profile.module.css'
-import {MyPosts} from "./MyPosts/MyPosts";
-import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import {ActionsTypes, ProfilePageType} from "../../redux/store";
-// import {addPost, ProfilePageType, updateNewPostText} from "../../redux/state";
-import MyPostContainer from "./MyPosts/MyPostContainer";
-import {UsersPropsType} from "../Users/UsersContainer";
 import {Profile} from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";

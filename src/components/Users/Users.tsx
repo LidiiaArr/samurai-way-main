@@ -6,41 +6,48 @@ import {NavLink} from "react-router-dom";
 import axios from "axios";
 
 type UsersPropsTypePresentComp = {
-    totalUsersCount : number
+    totalUsersCount: number
     currentPage: number
     pageSize: number
     users: Array<UserType>
-    follow: (userId:number)=> void
-    unfollow:(userId:number)=> void
-    onPageChanged: (pageNumber: number)=> void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
+    onPageChanged: (pageNumber: number) => void
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => void
+    followingInProgress: Array<number>
 }
 const Users = (props: UsersPropsTypePresentComp) => {
 
-    let pagesCount = Math.ceil(props.totalUsersCount/props.pageSize);
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
 
-    let pages:Array<number> = [ ];
-    for(let i=1; i <= pagesCount; i++){
+    let pages: Array<number> = [];
+    for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }
 
     return <div>
         <div>
             {/*{pages.map(p=> {return <span className={this.props.currentPage === p && styles.selectedPage}>{p}</span>})}*/}
-            {pages.map(p=> {return <span className={ props.currentPage === p ? styles.selectedPage : styles.Page }
-                                         onClick={ (e)=>{props.onPageChanged(p)}} >{p}</span>})}
+            {pages.map(p => {
+                return <span className={props.currentPage === p ? styles.selectedPage : styles.Page}
+                             onClick={(e) => {
+                                 props.onPageChanged(p)
+                             }}>{p}</span>
+            })}
         </div>
         {/*{props.usersPage.users.map(u => <div key={u.id}>*/}
         {props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
                         <NavLink to={'/profile/' + u.id}>
-                            <img src={u?.photos?.small ? u.photos.small : userPhoto} className={styles.userPhoto}/>
+                            <img src={u?.photos?.small ? u.photos.small : userPhoto} className={styles.userPhoto}
+                                 alt={"user photo"}/>
                         </NavLink>
                     </div>
                     <div>
                         {u.followed
-                            ? <button onClick={() => {
-
+                            ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                                props.toggleFollowingProgress(true, u.id)
                                 axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
                                     withCredentials: true,
                                     headers: {
@@ -48,31 +55,33 @@ const Users = (props: UsersPropsTypePresentComp) => {
                                     }
                                 })
                                     .then(response => {
-                                        if(response.data.resultCode === 0) {
+                                        if (response.data.resultCode === 0) {
                                             props.unfollow(u.id)
                                         }
+                                        props.toggleFollowingProgress(false, u.id)
                                     })
 
                             }}>UnFollow</button>
-                            : <button onClick={() => {
-
-                                axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {},{
+                            : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                                props.toggleFollowingProgress(true, u.id)
+                                axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
                                     withCredentials: true,
                                     headers: {
                                         "API-KEY": "9a08c01f-a212-42b6-bf00-f90c2da32f6e"
                                     }
                                 })
                                     .then(response => {
-                                        if(response.data.resultCode === 0) {
+                                        if (response.data.resultCode === 0) {
                                             props.follow(u.id)
                                         }
+                                        props.toggleFollowingProgress(false, u.id)
                                     })
 
                             }}>Follow</button>}
 
                     </div>
                 </span>
-                <span>
+            <span>
                     <span>
                         <div>{u.name}</div>
                         <div>{u.status}</div>
@@ -83,7 +92,7 @@ const Users = (props: UsersPropsTypePresentComp) => {
                         <div>{"u.location.country"}</div>
                     </span>
                 </span>
-            </div>)
+        </div>)
         }
     </div>
 };

@@ -1,9 +1,7 @@
-import React from 'react';
 import {combineReducers, createStore} from "redux";
 import {profileReducer} from "./profile-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
-import {StoreType} from "./store";
 import {usersReducer} from "./users-reducer";
 import {authReducer} from "./auth-reducer";
 
@@ -24,7 +22,6 @@ export type AppStateType = ReturnType<typeof rootReducer>
 let store = createStore(rootReducer);
 //Функция создания стора
 //window.store = store;
-
 export default store;
 
 //console.log(store.getState())
