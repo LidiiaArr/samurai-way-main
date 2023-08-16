@@ -1,4 +1,6 @@
 import {ChangeNewTextActionType, PostType, ProfilePageType} from "./store";
+import {Dispatch} from "redux";
+import {authAPI} from "../api/api";
 const SET_USER_DATA = "SET_USER_DATA"
 
 
@@ -26,7 +28,6 @@ let initialState :AuthType = {
 //Экшонкриэйторы
 
 export const authReducer = (state:AuthType=initialState, action:setAuthUserDataACType):AuthType=> {
-
     switch (action.type) {
         case SET_USER_DATA:
             return {
@@ -42,6 +43,8 @@ export const authReducer = (state:AuthType=initialState, action:setAuthUserDataA
     }
     return state;
 }
+//редьюсеры чистые функции которые принимают часть стейта
+
 export type setAuthUserDataACType = {
     type: "SET_USER_DATA",
     data: {
@@ -52,3 +55,14 @@ export type setAuthUserDataACType = {
 }
 export const setAuthUserData = (userId: number, email: string, login: string):setAuthUserDataACType => ({type: SET_USER_DATA, data: {userId, email, login}})
 // export const setAuthUserData = (data) => ({type: SET_USER_DATA, data: data})
+
+export const getAuthUserData = () => (dispatch: Dispatch) => {
+    authAPI.me()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                //если мы залогинены то сетаем в стейт id, email, login
+                let {id, email, login} = response.data.data
+                dispatch(setAuthUserData(id, email, login))
+            }
+        })
+}

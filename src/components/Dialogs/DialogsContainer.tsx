@@ -8,6 +8,7 @@ import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {AppStateType} from "../../redux/redux-store";
+import {AuthType} from "../../redux/auth-reducer";
 
 
 // type PropsType = {
@@ -36,21 +37,22 @@ import {AppStateType} from "../../redux/redux-store";
 //     </StoreContext.Consumer>
 // }
 type MapStatePropsType = {
-    dialogsPage:DialogStateType
+    dialogsPage: DialogStateType
 }
-
-let mapStateToProps = (state:AppStateType):{dialogsPage:DialogsPageType} => {
+//let mapStateToProps = (state:AppStateType):{dialogsPage:DialogsPageType} => {
+let mapStateToProps = (state: AppStateType): { dialogsPage: DialogsPageType, isAuth: AuthType } => {
     return {
-    dialogsPage: state.dialogsPage
+        dialogsPage: state.dialogsPage,
+        isAuth: state.auth
     }
 }
 
 let mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        updateNewMessageBody: (body)=>{
+        updateNewMessageBody: (body) => {
             dispatch(updateNewMessageBodyCreator(body))
         },
-        sendMessage: ()=>{
+        sendMessage: () => {
             dispatch(sendMessageCreator())
         },
     }

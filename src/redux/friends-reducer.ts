@@ -1,6 +1,3 @@
-import {usersAPI} from "../api/api";
-import {Dispatch} from "redux";
-
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
 const SET_USERS = "SET_USERS"
@@ -17,8 +14,9 @@ export type UserType = {
     photos: { small: string | null, large: string | null }
     status: string
 }
-export type UsersType = {
+export type FriendsType = {
     users: Array<UserType>
+    status: any
     pageSize: number
     totalUserCount: number
     currentPage: number
@@ -27,8 +25,14 @@ export type UsersType = {
 
 }
 
-let initialState: UsersType = {
+const statuses = {
+    NOT_INITIALIZED: 'NOT_INITIALIZED',
+    ERROR: 'ERROR'
+}
+
+let initialState: FriendsType = {
     users: [],
+    status: statuses.NOT_INITIALIZED,
     pageSize: 10,
     totalUserCount: 0,
     currentPage: 1,
@@ -46,7 +50,6 @@ export type AddPostActionType = {
     type: "ADD-Post" //тип конкретная строка
     postMessage: string
 }
-
 type followACType = {
     type: "FOLLOW"
     userId: number
@@ -80,23 +83,17 @@ type setIsFollowingProgressACType = {
     userId: number
 }
 //Экшонкриэйторы
-export const followSuccess = (userId: number): followACType => ({type: FOLLOW, userId})
-export const unfollowSuccess = (userId: number): unfollowACType => ({type: UNFOLLOW, userId})
+export const follow = (userId: number): followACType => ({type: FOLLOW, userId})
+export const unfollow = (userId: number): unfollowACType => ({type: UNFOLLOW, userId})
 export const setUsers = (users: Array<UserType>): setUsersACType => ({type: SET_USERS, users})
 export const setCurrentPage = (currentPage: number): setCurrentPageACType => ({
     type: SET_CURRENT_PAGE,
     currentPage: currentPage
 })
-export const setTotalUsersCount = (totalUsersCount: number): setUsersTotalCountACType => ({
+export const setUsersTotalCount = (totalUsersCount: number): setUsersTotalCountACType => ({
     type: SET_TOTAL_USERS_COUNT,
     totalUsersCount: totalUsersCount
 })
-//меняю название перерменнной setUsersTotalCount на setTotalUserCount
-
-// export const setUsersTotalCount = (totalUsersCount: number): setUsersTotalCountACType => ({
-//     type: SET_TOTAL_USERS_COUNT,
-//     totalUsersCount: totalUsersCount
-// })
 export const toggleIsFetching = (isFetching: boolean): setIsFetchingACType => ({
     type: TOGGLE_IS_FETCHING,
     isFetching: isFetching
@@ -108,7 +105,7 @@ export const toggleFollowingProgress = (isFetching: boolean, userId: number): se
 })
 
 
-export const usersReducer = (state: UsersType = initialState, action: followACType | unfollowACType | setUsersACType | setCurrentPageACType | setUsersTotalCountACType | setIsFetchingACType | setIsFollowingProgressACType): UsersType => {
+export const friendsReducer = (state: FriendsType = initialState, action: followACType | unfollowACType | setUsersACType | setCurrentPageACType | setUsersTotalCountACType | setIsFetchingACType | setIsFollowingProgressACType): FriendsType => {
     switch (action.type) {
         case FOLLOW:
             return {
@@ -140,50 +137,4 @@ export const usersReducer = (state: UsersType = initialState, action: followACTy
 
     }
     return state;
-}
-
-export const getUsers = (currentPage: number, pageSize: number) => {
-    return (dispatch: Dispatch) => {
-        dispatch(toggleIsFetching(true));
-        //диспатчим экшонкриэйтор чтобы показал крутилку
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
-            //пиниаю апишку дай пользователей
-            dispatch(toggleIsFetching(false))
-            //диспатчу что закончился тоглинг
-            dispatch(setUsers(data.items));
-            //
-            dispatch(setTotalUsersCount(data.totalCount))
-        })
-    }
-}
-//thunk криэйтор это функция которая может что то принимать и которая возвращает санку
-
-export const follow = (userId: number) => {
-    console.log("FollowTHunk")
-
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId))
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId))
-            })
-    }
-}
-
-export const unfollow = (userId: number) => {
-    console.log("unFollowTHunk")
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        console.log("unFollowTHunk2")
-        usersAPI.unfollow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId))
-            })
-    }
 }

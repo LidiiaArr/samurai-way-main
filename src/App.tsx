@@ -6,6 +6,8 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import {Friends} from "./components/Users/Friends";
+import Login from "./components/Login/Login";
 
 
 type AppPropsType = {}
@@ -20,10 +22,11 @@ function App(props: AppPropsType) {
 
             <Navbar/>
             <div className="app-wrapper-content">
-
+                <Route path="/friends" render={ () => <Friends />} />
                 <Route path="/dialogs" render={() => <DialogsContainer/>}/>
                 <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
                 <Route path="/users" render={() => <UsersContainer/>}/>
+                <Route path="/login" render={() => <Login/>}/>
 
             </div>
         </div>
