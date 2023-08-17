@@ -13,7 +13,6 @@ type PropsType = {
     sendMessage: () => void
     isAuth: AuthType
 }
-////Внимание если нужен props.isAuth то используй props.isAuth.isAuth
 export const Dialogs = (props: PropsType) => {
     let state = props.dialogsPage
 
@@ -27,9 +26,6 @@ export const Dialogs = (props: PropsType) => {
         let body = e.target.value;
         props.updateNewMessageBody(body)
     }
-
-    if(!props.isAuth.isAuth) return <Redirect to={'/login'} />
-    // если пользователь не залоген редиректни его на логин
 
     return (
         <div className={s.dialogs}>a

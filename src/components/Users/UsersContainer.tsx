@@ -14,35 +14,17 @@ import {
 import {AppStateType} from "../../redux/redux-store";
 import Preloader from "../common/Preloader/Preloader";
 import {usersAPI} from "../../api/api";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 class UsersContainer extends React.Component<UsersPropsType> {
 
 
     componentDidMount() {
-        // // this.props.toggleIsFetching(true)
-        // // // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
-        // // //     withCredentials: true,
-        // // // })
-        // // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-        // //     this.props.toggleIsFetching(false)
-        // //     this.props.setUsers(data.items);
-        // //     this.props.setTotalUsersCount(data.totalCount)
-        // })
          this.props.getUsers(this.props.currentPage, this.props.pageSize)
     }
 
     onPageChanged = (pageNumber) => {
         this.props.getUsers(pageNumber, this.props.pageSize)
-
-        // this.props.setCurrentPage(pageNumber);
-        // this.props.toggleIsFetching(true)
-        // // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {
-        // //     withCredentials: true,
-        // // })
-        // usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(data.items)
-        // })
     }
 
     render() {
@@ -95,32 +77,7 @@ type mapDispatchToPropsType = {
 }
 export type UsersPropsType = MapStatePropsType & mapDispatchToPropsType
 
-//     let mapDispatchToProps = (dispatch: Dispatch):mapDispatchToPropsType => {
-//     return {
-//         follow: (userId:number)=> {
-//             dispatch(followAC(userId))
-//         },
-//         unfollow:(userId:number)=> {
-//             dispatch(unfollowAC(userId))
-//         },
-//         setUsers:(users:Array<UserType>)=>{
-//             dispatch(setUsersAC(users))
-//         },
-//         setCurrentPage: (pageNumber)=> {
-//             dispatch(setCurrentPageAC(pageNumber))
-//         },
-//         setTotalUsersCount: (totalCount)=> {
-//             dispatch(setUsersTotalCountAC(totalCount))
-//         },
-//         toggleIsFetching: (isFetching: boolean)=> {
-//             dispatch(toggleIsFetchingAC(isFetching))
-//         }
-//     }
-// }
-//колбеки
-
-
-export default connect(mapStateToProps, {
+export default withAuthRedirect(connect(mapStateToProps, {
     follow: follow,
     unfollow: unfollow,
     setUsers: setUsers,
@@ -130,7 +87,7 @@ export default connect(mapStateToProps, {
     toggleFollowingProgress: toggleFollowingProgress,
     getUsers: getUsers
     //санкКреэйтор попадает в  пропс
-})(UsersContainer)
+})(UsersContainer))
 //объект из mapStateToProps и объект из mapDispatchToProps склеиваются в один объект props
 //который передается компоненте UsersContainer
 //объект props содержит стейт и колбеки

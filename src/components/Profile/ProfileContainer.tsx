@@ -1,11 +1,10 @@
 import React from 'react';
 import {Profile} from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
 import {getUserProfile, ProfileUserType, setUserProfile} from "../../redux/profile-reducer";
 import {Redirect, RouteComponentProps, withRouter} from "react-router-dom";
-import {usersAPI} from "../../api/api";
 import {AuthType} from "../../redux/auth-reducer";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 type ProfilePropsType = {
     // setUserProfile: (profile: ProfileUserType) => void
@@ -19,7 +18,6 @@ type PathParamsType = {
 }
 type AllProfilePropsType = ProfilePropsType & RouteComponentProps<PathParamsType>
 
-////Внимание если нужен props.isAuth то используй props.isAuth.isAuth
 class ProfileContainer extends React.Component<AllProfilePropsType> {
 
     componentDidMount() {
@@ -31,36 +29,20 @@ class ProfileContainer extends React.Component<AllProfilePropsType> {
     }
 
     render() {
-
         return (
             <Profile {...this.props} profile={this.props.profile}/>
         )
     }
 }
 
-// type ProfilePropsType ={
-//     profilePage: ProfilePageType
-//     dispatch: (action:ActionsTypes)=>void
-// }
 
-// <MyPostsContainer posts={props.profilePage.posts}
-//                   newPostText={props.profilePage.newPostText}
-//                   dispatch={props.dispatch}
-// />
+let AuthRedirectComponent = withAuthRedirect(ProfileContainer)
 
-let AuthRedirectComponent = (props) => {
-
-    // @ts-ignore
-    if(!this.props.isAuth.isAuth) return <Redirect to={'/login'} />
-
-    // если пользователь не залоген редиректни его на логин
-    return <ProfileContainer {...props}/>
-}
 let mapStateToProps = (state) => ({
     profile: state.profilePage.profile,
     isAuth: state.auth
 })
 
-let withUrlDataComponent = withRouter(ProfileContainer)
+let withUrlDataComponent = withRouter(AuthRedirectComponent)
 //Закидываем данные из url
 export default connect(mapStateToProps, {getUserProfile})(withUrlDataComponent)
