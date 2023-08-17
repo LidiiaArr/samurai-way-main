@@ -17,6 +17,8 @@ export function withAuthRedirect<T>(Component: ComponentType<T>) {
     //generic функция
     const RedirectComponent = (props: MapStateToPropsType) => {
         let {isAuth, ...restProps} = props
+        //деструктуризация достаем isAuth и другие пропсы
+        //и в пропсы к компоненте isAuth не попадет
         if (!isAuth) {
             return <Redirect to={'/login'}/>
         }
