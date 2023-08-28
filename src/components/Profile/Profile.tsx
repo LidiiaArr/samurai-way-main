@@ -17,13 +17,4 @@ export function Profile(props: ProfilePropsType) {
     )
 }
 
-// type ProfilePropsType ={
-//     profilePage: ProfilePageType
-//     dispatch: (action:ActionsTypes)=>void
-// }
-
-// <MyPostsContainer posts={props.profilePage.posts}
-//                   newPostText={props.profilePage.newPostText}
-//                   dispatch={props.dispatch}
-// />
 

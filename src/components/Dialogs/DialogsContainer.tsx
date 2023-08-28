@@ -1,12 +1,9 @@
 import React, {ChangeEvent, ChangeEventHandler} from "react";
-import s from './Dialogs.module.css'
-import {DialogItem} from "./DialogItem/DialogsItem";
-import {Message} from "./Message/Message";
 import {ActionsTypes, DialogsPageType, StoreType} from "../../redux/store";
 import {DialogStateType, sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
-import {Dispatch} from "redux";
+import {compose, Dispatch} from "redux";
 import {AppStateType} from "../../redux/redux-store";
 import {AuthType} from "../../redux/auth-reducer";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
@@ -28,14 +25,11 @@ let mapDispatchToProps = (dispatch: Dispatch) => {
         },
     }
 }
-let AuthRedirectComponent = withAuthRedirect(Dialogs)
 
-//mapStateToProps
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
-
-
-
-export default DialogsContainer
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, mapDispatchToProps),//результат withAuthRedirect закинь сюда
+    withAuthRedirect //Dialogs попадает в withAuthRedirect
+)(Dialogs)
 
 
 

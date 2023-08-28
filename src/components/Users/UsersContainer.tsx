@@ -2,19 +2,17 @@ import React from "react";
 import Users from "./Users";
 import {connect} from "react-redux";
 import {
-    followSuccess,
     setCurrentPage,
     setUsers,
     setTotalUsersCount,
     toggleIsFetching, toggleFollowingProgress,
-    unfollowSuccess,
     UsersType,
     UserType, getUsers, follow, unfollow
 } from "../../redux/users-reducer";
 import {AppStateType} from "../../redux/redux-store";
 import Preloader from "../common/Preloader/Preloader";
-import {usersAPI} from "../../api/api";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 class UsersContainer extends React.Component<UsersPropsType> {
 
@@ -77,17 +75,17 @@ type mapDispatchToPropsType = {
 }
 export type UsersPropsType = MapStatePropsType & mapDispatchToPropsType
 
-export default withAuthRedirect(connect(mapStateToProps, {
-    follow: follow,
-    unfollow: unfollow,
-    setUsers: setUsers,
-    setCurrentPage: setCurrentPage,
-    setTotalUsersCount: setTotalUsersCount,
-    toggleIsFetching: toggleIsFetching,
-    toggleFollowingProgress: toggleFollowingProgress,
-    getUsers: getUsers
-    //санкКреэйтор попадает в  пропс
-})(UsersContainer))
-//объект из mapStateToProps и объект из mapDispatchToProps склеиваются в один объект props
-//который передается компоненте UsersContainer
-//объект props содержит стейт и колбеки
+export default compose<React.ComponentType>(
+    withAuthRedirect,
+    connect(mapStateToProps, {
+        follow: follow,
+        unfollow: unfollow,
+        setUsers: setUsers,
+        setCurrentPage: setCurrentPage,
+        setTotalUsersCount: setTotalUsersCount,
+        toggleIsFetching: toggleIsFetching,
+        toggleFollowingProgress: toggleFollowingProgress,
+        getUsers: getUsers
+    })//объект из mapStateToProps и объект из mapDispatchToProps склеиваются в один объект props
+)(UsersContainer);
+
