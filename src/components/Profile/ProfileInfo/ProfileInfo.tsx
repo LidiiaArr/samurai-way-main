@@ -3,7 +3,7 @@ import s from './ProfileInfo.module.css'
 import Preloader from "../../common/Preloader/Preloader";
 import {ProfileUserType} from "../../../redux/profile-reducer";
 import userPhoto from "../../../assets/images/single-user-icon-png-free--rLHSHx.png";
-import ProfileStatus from "./ProfileStatus"
+import {ProfileStatus} from "./ProfileStatus"
 
 type ProfileInfoType = {
     profile: ProfileUserType

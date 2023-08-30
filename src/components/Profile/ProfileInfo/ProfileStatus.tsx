@@ -6,7 +6,7 @@ type ProfileStatusPropsType = {
     updateStatus: (status: string) => void
 }
 
-class ProfileStatus extends React.Component<ProfileStatusPropsType> {
+export class ProfileStatus extends React.Component<ProfileStatusPropsType> {
     state = {
         editMode: false,
         status: this.props.status
@@ -30,9 +30,8 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType> {
         })
     }
 
-//prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<{}>, snapshot?: any
-    componentDidUpdate(prevProps, prevState) {
-        if(prevProps !== this.props.status )
+    componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<{}>, snapshot?: any) {
+        if(prevProps.status !== this.props.status )
         this.setState({
             status: this.props.status
         })
@@ -62,7 +61,7 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType> {
 
 }
 
-export default ProfileStatus
+// export default ProfileStatus
 
 
 //statusInputRef = React.createRef<any>()
