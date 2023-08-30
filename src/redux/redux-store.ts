@@ -1,14 +1,14 @@
-import {AnyAction, applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {AnyAction, applyMiddleware, combineReducers, createStore} from "redux";
 import {profileReducer} from "./profile-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 import {usersReducer} from "./users-reducer";
 import {authReducer} from "./auth-reducer";
-import friends from "../components/Users/Friends";
 import {friendsReducer} from "./friends-reducer";
-import thunk, {ThunkDispatch} from "redux-thunk";
+import  {ThunkDispatch} from "redux-thunk";
 import thunkMiddleware from "redux-thunk"
-import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {reducer as formReducer} from 'redux-form'
+
 
 let rootReducer = combineReducers({
     profilePage:profileReducer,
@@ -17,6 +17,7 @@ let rootReducer = combineReducers({
     usersPage:usersReducer,
     auth: authReducer,
     friends: friendsReducer,
+    form: formReducer,
     });
 //нужно передать этой функции скомбаненные 3 редьюсера
 //Вызываем функцию combineReducers и передаем объект
@@ -27,8 +28,10 @@ export type AppStateType = ReturnType<typeof rootReducer>
 
 
 let store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+
 //Функция создания стора
-//window.store = store;
+//@ts-ignore
+window.store = store;
 
 export type AppThunkDispatch = ThunkDispatch<AppStateType, void, AnyAction>
 
