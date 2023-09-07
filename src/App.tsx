@@ -37,7 +37,7 @@ export default App;
 
 
 //new string new computer
-
+//new string test2
 
 // <Route path="/dialogs" render={() => <DialogsContainer dialogsPage={props.state.dialogsPage}
 //                                                        dispatch={props.dispatch.bind(props.state)}
