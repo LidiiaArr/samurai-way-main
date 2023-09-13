@@ -1,6 +1,6 @@
 import React, {ChangeEvent, ChangeEventHandler} from "react";
 import {ActionsTypes, DialogsPageType, StoreType} from "../../redux/store";
-import {DialogStateType, sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
+import {DialogStateType, sendMessageCreator} from "../../redux/dialogs-reducer";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
@@ -17,11 +17,9 @@ let mapStateToProps = (state: AppStateType): { dialogsPage: DialogsPageType, isA
 
 let mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        updateNewMessageBody: (body) => {
-            dispatch(updateNewMessageBodyCreator(body))
-        },
-        sendMessage: () => {
-            dispatch(sendMessageCreator())
+
+        sendMessage: (newMessageBody:string) => {
+            dispatch(sendMessageCreator(newMessageBody))
         },
     }
 }
