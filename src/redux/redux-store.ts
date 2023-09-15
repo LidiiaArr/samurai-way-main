@@ -35,12 +35,6 @@ window.store = store;
 
 export type AppThunkDispatch = ThunkDispatch<AppStateType, void, AnyAction>
 
-// export const useAppDispatch = () => useDispatch<AppThunkDispatch>();
-// export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
-// //создаем протипизированный useSelector
-// //за счет этой типизации нужно указывать только тот тип данных которые мы хотим принять
-// //без указания типа всего стейта
-
 
 export default store;
 

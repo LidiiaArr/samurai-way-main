@@ -15,6 +15,7 @@ type ProfilePropsType = {
     getStatus: (userId: number) => void
     status: string
     updateStatus: (status: string) => void
+    authorizedUserId: any
 }
 
 type PathParamsType = {
@@ -27,7 +28,7 @@ class ProfileContainer extends React.Component<AllProfilePropsType> {
     componentDidMount() {
         let userId = this.props.match.params.userId;
         if (!userId) {
-            userId = "27901";
+            userId = this.props.authorizedUserId;
         }
         this.props.getUserProfile(+userId)
         this.props.getStatus(+userId)
@@ -42,8 +43,9 @@ class ProfileContainer extends React.Component<AllProfilePropsType> {
 
 let mapStateToProps = (state) => ({
     profile: state.profilePage.profile,
-    isAuth: state.auth,
+    isAuth: state.auth.isAuth,
     status: state.profilePage.status,
+    authorizedUserId: state.auth.userId
     //status: state.status
 })
 

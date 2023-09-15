@@ -1,4 +1,4 @@
-import axios from "axios";
+ import axios from "axios";
 
 
 const instance = axios.create({
@@ -42,7 +42,14 @@ export const profileAPI = {
 
 export const authAPI = {
     me() {
-        return instance.get(`auth/me`)
+        return instance.get(`auth/me`);
         //возвращает промис потом в компоненте мы подпишемся на промис then
+    },
+    login(email: string, password: string, rememberMe=false) {
+        return instance.post(`auth/login`, {email, password, rememberMe});
+    },
+    logout() {
+        return instance.delete(`auth/login`);
     }
+
 }

@@ -1,54 +1,54 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import './App.css';
 import {Navbar} from "./components/Navbar/Navbar";
-import {Route} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import {Friends} from "./components/Users/Friends";
 import Login from "./components/Login/Login";
+import {connect} from "react-redux";
+import {getAuthUserData, logout} from "./redux/auth-reducer";
+import {compose} from "redux";
 
 
-type AppPropsType = {}
-
-
-function App(props: AppPropsType) {
-
-    return (
-        <div className="app-wrapper">
-
-            <HeaderContainer/>
-
-            <Navbar/>
-            <div className="app-wrapper-content">
-                <Route path="/friends" render={ () => <Friends />} />
-                <Route path="/dialogs" render={() => <DialogsContainer/>}/>
-                <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
-                <Route path="/users" render={() => <UsersContainer/>}/>
-                <Route path="/login" render={() => <Login/>}/>
-
-            </div>
-        </div>
-    );
+type AppPropsType = {
+    getAuthUserData: () => void
 }
 
-export default App;
+
+class App extends React.Component<AppPropsType> {
+
+    componentDidMount() {
+        this.props.getAuthUserData()
+    }
+
+    render() {
+        return (
+            <div className="app-wrapper">
+
+                <HeaderContainer/>
+
+                <Navbar/>
+                <div className="app-wrapper-content">
+                    <Route path="/friends" render={() => <Friends/>}/>
+                    <Route path="/dialogs" render={() => <DialogsContainer/>}/>
+                    <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
+                    <Route path="/users" render={() => <UsersContainer/>}/>
+                    <Route path="/login" render={() => <Login/>}/>
+
+                </div>
+            </div>
+        );
+    }
+}
 
 
-//new string new computer
-//new string test2
 
-// <Route path="/dialogs" render={() => <DialogsContainer dialogsPage={props.state.dialogsPage}
-//                                                        dispatch={props.dispatch.bind(props.state)}
-// />}/>
-// <Route path="/profile" render={() => <Profile profilePage={props.state.profilePage}
-//                                               dispatch={props.dispatch.bind(props.state)}
+export default compose<React.ComponentType>(
+    withRouter,
+    connect(null, {getAuthUserData}))(App)
 
-// type AppPropsType = {
-//     state: RootStateType
-//     getState:()=>RootStateType
-//     dispatch: (action:ActionsTypes)=>void
-// }
 
-// const state = props.getState()
+//<ReactElement>
