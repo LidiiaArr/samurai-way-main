@@ -40,7 +40,3 @@ rerenderEntireTree();
 
 //import state, {addPost, RootStateType, subscribe, updateNewPostText} from './redux/state'- ругался вебшторм
 
-//store.subscribe(()=>{
-//     let state = store.getState();
-//     rerenderEntireTree();
-// }) путь самурая 47

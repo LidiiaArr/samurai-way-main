@@ -58,7 +58,7 @@ export const setAuthUserData = (userId: number | null, email: string | null, log
 // export const setAuthUserData = (data) => ({type: SET_USER_DATA, data: data})
 
 export const getAuthUserData = () => (dispatch: Dispatch) => {
-    authAPI.me()
+    return authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 //если мы залогинены то сетаем в стейт id, email, login

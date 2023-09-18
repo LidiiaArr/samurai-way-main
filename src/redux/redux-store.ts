@@ -8,6 +8,7 @@ import {friendsReducer} from "./friends-reducer";
 import  {ThunkDispatch} from "redux-thunk";
 import thunkMiddleware from "redux-thunk"
 import {reducer as formReducer} from 'redux-form'
+import {appReducer} from "./app-reducer";
 
 
 let rootReducer = combineReducers({
@@ -18,6 +19,7 @@ let rootReducer = combineReducers({
     auth: authReducer,
     friends: friendsReducer,
     form: formReducer,
+    app: appReducer
     });
 //нужно передать этой функции скомбаненные 3 редьюсера
 //Вызываем функцию combineReducers и передаем объект

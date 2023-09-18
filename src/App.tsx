@@ -9,22 +9,26 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import {Friends} from "./components/Users/Friends";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
-import {getAuthUserData, logout} from "./redux/auth-reducer";
 import {compose} from "redux";
+import {initializeApp} from "./redux/app-reducer";
+import Preloader from "./components/common/Preloader/Preloader";
 
 
-type AppPropsType = {
-    getAuthUserData: () => void
-}
+type AppPropsType = any
+//     {
+//     getAuthUserData: () => void
+// }
 
 
 class App extends React.Component<AppPropsType> {
 
     componentDidMount() {
-        this.props.getAuthUserData()
+        this.props.initializeApp()
     }
-
     render() {
+        if(!this.props.initialized){
+            return <Preloader/>
+        }
         return (
             <div className="app-wrapper">
 
@@ -44,11 +48,13 @@ class App extends React.Component<AppPropsType> {
     }
 }
 
-
+const mapStateToProps = (state) => ({
+    initialized: state.app.initialized
+})
 
 export default compose<React.ComponentType>(
     withRouter,
-    connect(null, {getAuthUserData}))(App)
+    connect(mapStateToProps, {initializeApp}))(App);
 
 
 //<ReactElement>
