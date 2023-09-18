@@ -142,11 +142,12 @@ export const usersReducer = (state: UsersType = initialState, action: followACTy
     return state;
 }
 
-export const getUsers = (currentPage: number, pageSize: number) => {
+export const requestUsers = (page: number, pageSize: number) => {
     return (dispatch: Dispatch) => {
         dispatch(toggleIsFetching(true));
+        dispatch(setCurrentPage(page))
         //диспатчим экшонкриэйтор чтобы показал крутилку
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+        usersAPI.getUsers(page, pageSize).then(data => {
             //пиниаю апишку дай пользователей
             dispatch(toggleIsFetching(false))
             //диспатчу что закончился тоглинг

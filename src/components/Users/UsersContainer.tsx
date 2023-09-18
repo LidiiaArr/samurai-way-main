@@ -7,12 +7,19 @@ import {
     setTotalUsersCount,
     toggleIsFetching, toggleFollowingProgress,
     UsersType,
-    UserType, getUsers, follow, unfollow
+    UserType, requestUsers, follow, unfollow
 } from "../../redux/users-reducer";
 import {AppStateType} from "../../redux/redux-store";
 import Preloader from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {
+    getCurrentPage, getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsersPage
+} from "../../redux/users-selectors";
 
 class UsersContainer extends React.Component<UsersPropsType> {
 
@@ -52,13 +59,21 @@ type MapStatePropsType = {
     followingInProgress: Array<number>
 }
 let mapStateToProps = (state: AppStateType): MapStatePropsType => {
+    // return {
+    //     usersPage: state.usersPage,
+    //     pageSize: state.usersPage.pageSize,
+    //     totalUsersCount: state.usersPage.totalUserCount,
+    //     currentPage: state.usersPage.currentPage,
+    //     isFetching: state.usersPage.isFetching,
+    //     followingInProgress: state.usersPage.followingInProgress
+    // }
     return {
-        usersPage: state.usersPage,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUserCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        usersPage: getUsersPage(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state)
     }
 }
 //стейт usersPage: state.users
@@ -84,7 +99,7 @@ export default compose<React.ComponentType>(
         setTotalUsersCount: setTotalUsersCount,
         toggleIsFetching: toggleIsFetching,
         toggleFollowingProgress: toggleFollowingProgress,
-        getUsers: getUsers
+        getUsers: requestUsers
     })//объект из mapStateToProps и объект из mapDispatchToProps склеиваются в один объект props
 )(UsersContainer);
 
