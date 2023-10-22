@@ -15,9 +15,7 @@ import Preloader from "./components/common/Preloader/Preloader";
 
 
 type AppPropsType = any
-//     {
-//     getAuthUserData: () => void
-// }
+
 
 
 class App extends React.Component<AppPropsType> {
@@ -31,9 +29,7 @@ class App extends React.Component<AppPropsType> {
         }
         return (
             <div className="app-wrapper">
-
                 <HeaderContainer/>
-
                 <Navbar/>
                 <div className="app-wrapper-content">
                     <Route path="/friends" render={() => <Friends/>}/>
@@ -44,6 +40,7 @@ class App extends React.Component<AppPropsType> {
 
                 </div>
             </div>
+
         );
     }
 }

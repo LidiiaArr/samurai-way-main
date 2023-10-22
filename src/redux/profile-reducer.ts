@@ -4,6 +4,7 @@ import {profileAPI, usersAPI} from "../api/api";
 const ADD_Post = "ADD-Post"
 const SET_USER_PROFILE = "SET_USER_PROFILE"
 const SET_STATUS = "SET_STATUS"
+const DELETE_POST = "DELETE_POST"
 
 export type AddPostActionType = {
     type: "ADD-Post" //тип конкретная строка
@@ -84,8 +85,18 @@ export const setUserProfile = (profile: ProfileUserType): setUserProfileACType =
     }
 }
 
+export const deletePost = (postId) => {
+    return {
+        type: "DELETE_POST" as const,
+        postId: postId
+    }
+}
+type deletePostACType = {
+    type: "DELETE_POST",
+    postId: number
+}
 
-export const profileReducer = (state: ProfilePageType = initialState, action: AddPostActionType | ChangeNewTextActionType | setUserProfileACType | setStatusAT): ProfilePageType => {
+export const profileReducer = (state: ProfilePageType = initialState, action: AddPostActionType | ChangeNewTextActionType | setUserProfileACType | setStatusAT | deletePostACType): ProfilePageType => {
     switch (action.type) {
         case ADD_Post: {
             const newPost: PostType = {
@@ -104,6 +115,12 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Ad
         }
         case SET_STATUS: {
             return {...state, status: action.status}
+        }
+        case "DELETE_POST": {
+            return {
+                ...state,
+                posts: state.posts.filter((post) => post.id !== action.postId)
+            }
         }
         default:
             return state;
