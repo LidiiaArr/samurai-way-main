@@ -51,10 +51,7 @@ export const sendMessageCreator =(newMessageBody:string):sendMessageCreatorType 
 
 
 export const dialogsReducer = (state:DialogStateType= initialState , action:sendMessageCreatorType):DialogStateType=>{
-
     switch (action.type) {
-
-
         case SEND_MESSAGE:
             let body = action.newMessageBody;
             return {
@@ -63,6 +60,5 @@ export const dialogsReducer = (state:DialogStateType= initialState , action:send
             }
         default:
             return state;
-
     }
 }

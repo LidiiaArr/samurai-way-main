@@ -19,11 +19,6 @@ export function ProfileInfo(props: ProfileInfoType) {
     return (
 
         <div>
-            {/*<div>*/}
-            {/*    <img*/}
-            {/*        src="https://media.istockphoto.com/photos/tropical-white-sand-beach-with-coco-palms-picture-id1181563943?k=20&m=1181563943&s=612x612&w=0&h=r46MQMvFnvrzzTfjVmvZED5nZyTmAYwISDvkdtM2i2A="/>*/}
-            {/*</div>*/}
-
             <div className={s.descriptionBlock}>
                 <img src={props.profile?.photos?.large ? props.profile.photos.large : userPhoto} alt={'profile Photo'}/>
                 <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>

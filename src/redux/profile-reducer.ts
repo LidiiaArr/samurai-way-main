@@ -4,7 +4,6 @@ import {profileAPI, usersAPI} from "../api/api";
 const ADD_Post = "ADD-Post"
 const SET_USER_PROFILE = "SET_USER_PROFILE"
 const SET_STATUS = "SET_STATUS"
-const DELETE_POST = "DELETE_POST"
 
 export type AddPostActionType = {
     type: "ADD-Post" //тип конкретная строка
@@ -73,7 +72,6 @@ export const addPostActionCreator = (postMessage: string): AddPostActionType => 
 }
 
 
-
 type setUserProfileACType = {
     type: "SET_USER_PROFILE"
     profile: ProfileUserType
@@ -125,14 +123,12 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Ad
         default:
             return state;
     }
-    return state;
+    //return state;
 }
 
-export const getUserProfile = (userId: number) => (dispatch: Dispatch) => {
-    usersAPI.getProfile(userId)
-        .then(response => {
-            dispatch(setUserProfile(response.data));
-        })
+export const getUserProfile = (userId: number) => async (dispatch: Dispatch) => {
+    const response = await usersAPI.getProfile(userId)
+    dispatch(setUserProfile(response.data));
 }
 
 
@@ -141,20 +137,16 @@ export type setStatusAT = {
     status: string
 }
 export const setStatus = (status: string): setStatusAT => ({type: SET_STATUS, status})
-export const getStatus = (userId: number)  => (dispatch: Dispatch) => {
-    profileAPI.getStatus(userId)
-        .then(response => {
-            dispatch(setStatus(response.data))
-        })
+export const getStatus = (userId: number) => async (dispatch: Dispatch) => {
+    const response = await profileAPI.getStatus(userId)
+    dispatch(setStatus(response.data))
 }
 
-export const updateStatus = (status: string)  => (dispatch: Dispatch) => {
-    profileAPI.updateStatus(status)
-        .then(response => {
-            if(response.data.resultCode ===0 ){
-                dispatch(setStatus(status))
-            }
-       })
+export const updateStatus = (status: string) => async (dispatch: Dispatch) => {
+    const response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
 }
 
 

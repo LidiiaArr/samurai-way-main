@@ -1,5 +1,6 @@
 import {usersAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {updateObjectInArray} from "../utils/objects-helpers";
 
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
@@ -91,7 +92,7 @@ export const setTotalUsersCount = (totalUsersCount: number): setUsersTotalCountA
     type: SET_TOTAL_USERS_COUNT,
     totalUsersCount: totalUsersCount
 })
-//меняю название перерменнной setUsersTotalCount на setTotalUserCount
+//меняю название переменнной setUsersTotalCount на setTotalUserCount
 
 // export const setUsersTotalCount = (totalUsersCount: number): setUsersTotalCountACType => ({
 //     type: SET_TOTAL_USERS_COUNT,
@@ -113,12 +114,14 @@ export const usersReducer = (state: UsersType = initialState, action: followACTy
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)
+                 //users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: true} )
             }
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)
+                //users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: false} )
             }
         case SET_USERS:
             return {...state, users: action.users}
@@ -143,48 +146,37 @@ export const usersReducer = (state: UsersType = initialState, action: followACTy
 }
 
 export const requestUsers = (page: number, pageSize: number) => {
-    return (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch) => {
         dispatch(toggleIsFetching(true));
         dispatch(setCurrentPage(page))
         //диспатчим экшонкриэйтор чтобы показал крутилку
-        usersAPI.getUsers(page, pageSize).then(data => {
-            //пиниаю апишку дай пользователей
-            dispatch(toggleIsFetching(false))
-            //диспатчу что закончился тоглинг
-            dispatch(setUsers(data.items));
-            //
-            dispatch(setTotalUsersCount(data.totalCount))
-        })
+        const data = await usersAPI.getUsers(page, pageSize);
+        //пиниаю апишку дай пользователей
+        dispatch(toggleIsFetching(false));
+        //диспатчу что закончился тоглинг
+        dispatch(setUsers(data.items));
+        dispatch(setTotalUsersCount(data.totalCount));
     }
 }
-//thunk криэйтор это функция которая может что то принимать и которая возвращает санку
+//thunk криэйтор это функция, которая может что-то принимать и которая возвращает санку
 
+const followUnfollowFlow = async(dispatch, userId, apiMethod, actionCreator) => {
+    dispatch(toggleFollowingProgress(true, userId))
+    const response = await apiMethod(userId)
+
+    if(response.data.resultCode === 0) {
+        dispatch(actionCreator(userId))
+    }
+    dispatch(toggleFollowingProgress(false, userId))
+}
 export const follow = (userId: number) => {
-    console.log("FollowTHunk")
-
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId))
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId))
-            })
+    return async (dispatch: Dispatch) => {
+        followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followSuccess)
     }
 }
 
 export const unfollow = (userId: number) => {
-    console.log("unFollowTHunk")
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        console.log("unFollowTHunk2")
-        usersAPI.unfollow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId))
-            })
+    return async (dispatch: Dispatch) => {
+        followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
     }
 }

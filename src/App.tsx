@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import './App.css';
 import {Navbar} from "./components/Navbar/Navbar";
 import {Route, withRouter} from "react-router-dom";

@@ -4,9 +4,6 @@ import {AppThunkDispatch} from "./redux-store";
 import {stopSubmit} from "redux-form";
 const SET_USER_DATA = "SET_USER_DATA"
 
-
-
-
 export type AuthType = {
     userId: number | null
     email: string | null
@@ -26,7 +23,6 @@ let initialState :AuthType = {
 }
 
 
-//Экшонкриэйторы
 
 export const authReducer = (state:AuthType=initialState, action:setAuthUserDataACType):AuthType=> {
     switch (action.type) {
@@ -57,20 +53,17 @@ export type setAuthUserDataACType = {
 export const setAuthUserData = (userId: number | null, email: string | null, login: string| null, isAuth: boolean):setAuthUserDataACType => ({type: SET_USER_DATA, payload: {userId, email, login, isAuth}})
 // export const setAuthUserData = (data) => ({type: SET_USER_DATA, data: data})
 
-export const getAuthUserData = () => (dispatch: Dispatch) => {
-    return authAPI.me()
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                //если мы залогинены то сетаем в стейт id, email, login
-                let {id, email, login} = response.data.data
-                dispatch(setAuthUserData(id, email, login, true))
-            }
-        })
+export const getAuthUserData = () => async (dispatch: Dispatch) => {
+    const response = await authAPI.me()
+    if (response.data.resultCode === 0) {
+        //если мы залогинены то сетаем в стейт id, email, login
+        let {id, email, login} = response.data.data
+        dispatch(setAuthUserData(id, email, login, true))
+    }
 }
 
-export const login = (email: string, password: string, rememberMe: boolean) => (dispatch: AppThunkDispatch) => {
-    authAPI.login(email, password, rememberMe)
-        .then(response => {
+export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: AppThunkDispatch) => {
+    let response = await authAPI.login(email, password, rememberMe)
             if (response.data.resultCode === 0) {
                 console.log('login')
                 dispatch(getAuthUserData())
@@ -78,14 +71,11 @@ export const login = (email: string, password: string, rememberMe: boolean) => (
                 let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error "
                 dispatch(stopSubmit("login",{_error: message}))
             }
-        })
 }
 
-export const logout = () => (dispatch: Dispatch) => {
-    authAPI.logout()
-        .then(response => {
+export const logout = () => async (dispatch: Dispatch) => {
+    let response = await authAPI.logout()
             if (response.data.resultCode === 0) {
                 dispatch(setAuthUserData(null, null, null, false))
             }
-        })
 }

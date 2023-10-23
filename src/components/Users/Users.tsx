@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./user.module.css";
 import userPhoto from "../../assets/images/single-user-icon-png-free--rLHSHx.png";
-import { UserType} from "../../redux/users-reducer";
+import {UserType} from "../../redux/users-reducer";
 import {NavLink} from "react-router-dom";
+import Paginator from "../common/Paginator/Paginator";
+import User from "./User";
 
 
 type UsersPropsTypePresentComp = {
@@ -18,56 +20,20 @@ type UsersPropsTypePresentComp = {
 }
 const Users = (props: UsersPropsTypePresentComp) => {
 
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
-
-    let pages: Array<number> = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
-    }
-
     return <div>
+        <Paginator totalUsersCount={props.totalUsersCount} currentPage={props.currentPage} pageSize={props.pageSize}
+                   onPageChanged={props.onPageChanged}/>
         <div>
-            {pages.map(p => {
-                return <span className={props.currentPage === p ? styles.selectedPage : styles.Page}
-                             onClick={(e) => {
-                                 props.onPageChanged(p)
-                             }}>{p}</span>
-            })}
+            {props.users.map(u => <User
+                    user={u}
+                    key={u.id}
+                    follow={props.follow}
+                    followingInProgress={props.followingInProgress}
+                    unfollow={props.unfollow}
+                />
+            )
+            }
         </div>
-        {props.users.map(u => <div key={u.id}>
-                <span>
-                    <div>
-                        <NavLink to={'/profile/' + u.id}>
-                            <img src={u?.photos?.small ? u.photos.small : userPhoto} className={styles.userPhoto}
-                                 alt={"user photo"}/>
-                        </NavLink>
-                    </div>
-                    <div>
-                        {u.followed
-                            ? <button disabled={props.followingInProgress.some(id => id === u.id)}
-                                      onClick={() => {
-                                          props.unfollow(u.id)
-                                      }}
-                            >UnFollow</button>
-                            : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
-                                props.follow(u.id)
-                            }}>Follow</button>}
-
-                    </div>
-                </span>
-            <span>
-                    <span>
-                        <div>{u.name}</div>
-                        <div>{u.status}</div>
-                    </span>
-                    <span>
-
-                        <div>{"u.location.city"}</div>
-                        <div>{"u.location.country"}</div>
-                    </span>
-                </span>
-        </div>)
-        }
     </div>
 };
 //span строчный занимает места по содержимому
