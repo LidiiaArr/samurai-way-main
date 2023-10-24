@@ -2,7 +2,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import  {SamuraiJSApp} from './App';
 
 import {BrowserRouter} from "react-router-dom";
 import  {RootStateType} from "./redux/store";
@@ -13,19 +13,7 @@ import {Provider} from "react-redux";
 export const rerenderEntireTree = ()=>{
 
     ReactDOM.render(
-        <BrowserRouter>
-
-            <Provider store={store}>
-
-            {/*Хотим чтобы все наши дочерние компоненты имели доступ к стору напрямую*/}
-                <App />
-                {/*<App state={store.getState()}*/}
-                {/*     getState={store.getState.bind(store)}*/}
-                {/*     dispatch={store.dispatch.bind(store)}*/}
-                {/*/>*/}
-
-            </Provider>
-        </BrowserRouter>,
+        <SamuraiJSApp />,
         document.getElementById('root')
     );
 }
