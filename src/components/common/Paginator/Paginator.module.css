@@ -1,3 +1,11 @@
 .selectedPage {
     font-weight: bold;
 }
+
+.pageNumber {
+    padding: 5px;
+}
+
+.pageNumber:hover {
+    cursor: pointer;
+}
