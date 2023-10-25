@@ -4,16 +4,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import  {SamuraiJSApp} from './App';
 
-import {BrowserRouter} from "react-router-dom";
-import  {RootStateType} from "./redux/store";
-import store from './redux/redux-store'
-import {Provider} from "react-redux";
+
 
 
 export const rerenderEntireTree = ()=>{
 
     ReactDOM.render(
         <SamuraiJSApp />,
+
         document.getElementById('root')
     );
 }
