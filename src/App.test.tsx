@@ -7,3 +7,4 @@ it('renders without crashing', () => {
     ReactDOM.render(<SamuraiJSApp />, div)
     ReactDOM.unmountComponentAtNode(div)
 })
+
