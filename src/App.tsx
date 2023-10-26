@@ -44,7 +44,7 @@ class App extends React.Component<AppPropsType> {
                         )}
                     />
                     <Route
-                        path="/profile"
+                        path="/profile/:userId?"
                         render={()=> (
                             <Suspense fallback={<Preloader />}>
                             <ProfileContainer/>

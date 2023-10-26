@@ -15,7 +15,7 @@ const Paginator :React.FC<PaginatorPropsType> = ({totalUsersCount, currentPage, 
 
     //получаем общее число страниц 2563
     let pagesCount = Math.ceil(totalUsersCount / pageSize);
-console.log(pagesCount)
+
     let pages: Array<number> = [];
 
     for (let i = 1; i <= pagesCount; i++) {
@@ -23,7 +23,7 @@ console.log(pagesCount)
     }
     //получаем число порций страниц 253
     let portionCount = Math.ceil(pagesCount / portionSize)
-console.log(portionCount)
+
     //определяем левую границу порции (если вторая порция (2-1)*10 +1)
      const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1
     //определяем правую границу порции (если вторая порция 2*10)
