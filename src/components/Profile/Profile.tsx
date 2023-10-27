@@ -12,7 +12,6 @@ type ProfilePropsType = {
 }
 
 export function Profile(props: ProfilePropsType) {
-    console.log(props.profile)
     return (
         <div>
             <ProfileInfo profile={props.profile}
