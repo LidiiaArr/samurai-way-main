@@ -21,6 +21,7 @@ type AppPropsType = {
 }& ReturnType<typeof mapStateToProps>
 
 class App extends React.Component<AppPropsType> {
+    //срабатывает один раз когда компонента вмонтируется
     componentDidMount() {
         this.props.initializeApp()
     }
@@ -80,3 +81,5 @@ export const SamuraiJSApp = () => {
         </Provider>
     </HashRouter>
 }
+
+//HashRouter чтобы роуты работали на гитхаб пэйджес
