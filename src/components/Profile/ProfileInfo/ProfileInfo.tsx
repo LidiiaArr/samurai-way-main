@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import s from './ProfileInfo.module.css'
 import Preloader from "../../common/Preloader/Preloader";
 import {ProfileUserType} from "../../../redux/profile-reducer";
@@ -61,6 +61,7 @@ const ProfileData = ({profile, isOwner,onMainPhotoSelected, setEditMode}) => {
             <div className={s.input}>
                 {isOwner && <input type={'file'} onChange={onMainPhotoSelected}/>}
             </div>
+
             <div className={s.button}>
                 {isOwner && <div><button onClick={()=> setEditMode(true)}>edit</button></div>}
             </div>

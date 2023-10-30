@@ -2,7 +2,7 @@
 
 .header {
     grid-area: h;
-    background-color: #1fd655;
+    background-color: pink;
 }
 .header img {
     width: 150px;

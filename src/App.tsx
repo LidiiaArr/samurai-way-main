@@ -35,6 +35,7 @@ class App extends React.Component<AppPropsType> {
                 <HeaderContainer/>
                 <Navbar/>
                 <div className="app-wrapper-content">
+
                     <Route exact path="/" render={() => <Redirect to="/profile" />} />
                     <Route
                         path="/dialogs"
@@ -83,3 +84,9 @@ export const SamuraiJSApp = () => {
 }
 
 //HashRouter чтобы роуты работали на гитхаб пэйджес
+//return <BrowserRouter>
+//         <Provider store={store}>
+//             <AppContainer/>
+//         </Provider>
+//     </BrowserRouter>
+//обычно используется
